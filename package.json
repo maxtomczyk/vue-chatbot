@@ -10,9 +10,9 @@
   },
   "scripts": {
     "build": "npm run build:umd & npm run build:es & npm run build:unpkg",
-    "build:umd": "node node_modules/rollup/bin/rollup --config build/rollup.config.js --format umd --file dist/VueChatbot.umd.js",
-    "build:es": "node node_modules/rollup/bin/rollup --config build/rollup.config.js --format es --file dist/VueChatbot.esm.js",
-    "build:unpkg": "node node_modules/rollup/bin/rollup --config build/rollup.config.js --format iife --file dist/VueChatbot.min.js",
+    "build:umd": "node ../node_modules/rollup/bin/rollup --config build/rollup.config.js --format umd --file dist/VueChatbot.umd.js",
+    "build:es": "node ../node_modules/rollup/bin/rollup --config build/rollup.config.js --format es --file dist/VueChatbot.esm.js",
+    "build:unpkg": "node ../node_modules/rollup/bin/rollup --config build/rollup.config.js --format iife --file dist/VueChatbot.min.js",
     "postinstall": "npm run build"
   },
   "repository": {
