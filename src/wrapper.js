@@ -1,11 +1,11 @@
 // Import vue component
-import VueWebChatbot from './VueWebChatbot.vue'
+import VueChatbot from './VueChatbot.vue'
 
 // Declare install function executed by Vue.use()
 export function install(Vue) {
 	if (install.installed) return
 	install.installed = true
-	Vue.component('VueWebChatbot', VueWebChatbot)
+	Vue.component('VueChatbot', VueChatbot)
 }
 
 // Create module definition for Vue.use()
@@ -25,4 +25,4 @@ if (GlobalVue) {
 }
 
 // To allow use as module (npm/webpack/etc.) export component
-export default VueWebChatbot;
+export default VueChatbot;
