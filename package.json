@@ -1,18 +1,18 @@
 {
-  "name": "vue-web-chatbot",
+  "name": "vue-chatbot",
   "version": "1.0.0",
   "description": "Vue component for creating chatbot application inside Vue app.",
-  "main": "dist/VueWebChatbot.umd.js",
-  "module": "dist/VueWebChatbot.esm.js",
-  "unpkg": "dist/VueWebChatbot.min.js",
+  "main": "dist/VueChatbot.umd.js",
+  "module": "dist/VueChatbot.esm.js",
+  "unpkg": "dist/VueChatbot.min.js",
   "browser": {
-    "./sfc": "./src/VueWebChatbot.vue"
+    "./sfc": "./src/VueChatbot.vue"
   },
   "scripts": {
     "build": "npm run build:umd & npm run build:es & npm run build:unpkg",
-    "build:umd": "rollup --config build/rollup.config.js --format umd --file dist/VueWebChatbot.umd.js",
-    "build:es": "rollup --config build/rollup.config.js --format es --file dist/VueWebChatbot.esm.js",
-    "build:unpkg": "rollup --config build/rollup.config.js --format iife --file dist/VueWebChatbot.min.js",
+    "build:umd": "rollup --config build/rollup.config.js --format umd --file dist/VueChatbot.umd.js",
+    "build:es": "rollup --config build/rollup.config.js --format es --file dist/VueChatbot.esm.js",
+    "build:unpkg": "rollup --config build/rollup.config.js --format iife --file dist/VueChatbot.min.js",
     "postinstall": "npm run build"
   },
   "repository": {
