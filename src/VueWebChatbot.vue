@@ -78,7 +78,7 @@ export default {
     },
 
     sendMessageAsUser(text, origin) {
-      if(!this.messageInput.trim().length && origin === 'input') return
+      if (!this.messageInput.trim().length && origin === 'input') return
       this.messages.push(new Message(text, 'user'))
       this.buttons = []
       if (origin === 'input') {
@@ -124,8 +124,8 @@ export default {
       buttons.scrollTo(buttons.scrollLeft + e.deltaY, 0)
     },
 
-    textareaKey(e){
-      if(e.key !== 'Enter') return
+    textareaKey(e) {
+      if (e.key !== 'Enter') return
       e.preventDefault()
       this.sendMessageAsUser(this.messageInput, 'input')
     }
@@ -141,13 +141,13 @@ export default {
 </script>
 
 <style lang="css" scoped>
-.chatbot-window{
+.chatbot-window {
   font-family: Helvetica;
   height: 100%;
   width: 100%;
 }
 
-.chatbot-messages{
+.chatbot-messages {
   height: 85%;
   width: 90%;
   padding: 10px 5% 0 5%;
@@ -163,19 +163,19 @@ export default {
     border-radius: 2px;
 }
 
-.chatbot-message-row{
+.chatbot-message-row {
   display: flex;
 }
 
-.chatbot-message-row-user{
+.chatbot-message-row-user {
   justify-content: flex-end;
 }
 
-.chatbot-message-row-bot{
+.chatbot-message-row-bot {
   justify-content: flex-start;
 }
 
-.chatbot-message{
+.chatbot-message {
     max-width: 51%;
     margin: 2px 0;
     padding: 10px 15px;
@@ -183,16 +183,16 @@ export default {
     border-radius: 1.3em;
 }
 
-.chatbot-message-user{
+.chatbot-message-user {
   background-color: #0084FF;
   color: white;
 }
 
-.chatbot-message-bot{
+.chatbot-message-bot {
   background-color: #f2f2f2;
 }
 
-.chatbot-buttons{
+.chatbot-buttons {
   padding: 1% 5%;
   height: 38px;
   overflow-x: scroll;
@@ -226,7 +226,7 @@ export default {
 }
 
 
-.chatbot-textinput{
+.chatbot-textinput {
   display: flex;
   justify-content: space-around;
   align-items: flex-end;
@@ -237,22 +237,22 @@ export default {
   min-height: 25px;
 }
 
-.chatbot-textinput-disabled>textarea{
+.chatbot-textinput-disabled>textarea {
   pointer-events: none;
   color: #F2F2F2;
   border-color: #F2F2F2;
 }
 
-.chatbot-textinput-disabled>textarea::placeholder{
+.chatbot-textinput-disabled>textarea::placeholder {
   color: #F2F2F2;
 }
 
-.chatbot-textinput-disabled>div{
+.chatbot-textinput-disabled>div {
   color: #F2F2F2;
   pointer-events: none;
 }
 
-.chatbot-textarea{
+.chatbot-textarea {
   width: 85%;
   height: calc(100% - 2px);
   padding: 0;
@@ -263,7 +263,7 @@ export default {
   font-size: 1em;
 }
 
-.chatbot-sendbutton{
+.chatbot-sendbutton {
   width: 15%;
   color: #0084FF;
   display: flex;
@@ -272,15 +272,15 @@ export default {
   font-weight: bold;
 }
 
-.chatbot-sendbutton>div{
+.chatbot-sendbutton>div {
     cursor: pointer;
 }
 
-.chatbot-writing{
+.chatbot-writing {
   padding: 13px 10px;
 }
 
-.chatbot-writing-wrapper{
+.chatbot-writing-wrapper {
   display: flex;
   justify-content: space-around;
   align-items: center;
