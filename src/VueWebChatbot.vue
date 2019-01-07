@@ -14,14 +14,14 @@
       </div>
     </div>
   </div>
-  <div class="chatbot-buttons">
+  <div class="chatbot-buttons" @wheel="buttonsScroll($event)">
     <div class="chatbot-button" v-for="(button, i) in buttons" @click="postback(button)" :key="`BTN-${i}`">
       <div class="">{{ button.title }}</div>
     </div>
   </div>
-  <div class="chatbot-textinput" v-show="!buttons.length">
-    <textarea class="chatbot-textarea" :placeholder="(config.msgPlaceholder) ? config.msgPlaceholder : 'Your message'" v-model="messageInput"></textarea>
-    <div class="chatbot-sendbutton">
+  <div class="chatbot-textinput" :class="(buttons.length || writing) ? 'chatbot-textinput-disabled' : ''">
+    <textarea class="chatbot-textarea" :placeholder="(config.msgPlaceholder) ? config.msgPlaceholder : 'Your message'" v-model="messageInput" @keyup="textareaKey($event)"></textarea>
+    <div class="chatbot-sendbutton" :class="(!messageInput.length) ? 'chatbot-sendbutton-disabled': ''">
       <div @click="sendMessageAsUser(messageInput, 'input')">
         {{ config.sendButton || 'Send' }}
       </div>
@@ -56,12 +56,6 @@ export default {
       else return 5000
     },
 
-    scrollToBottom(){
-      setTimeout(function () {
-        document.querySelector('.chatbot-messages').scrollTo(0, document.querySelector('.chatbot-messages').scrollHeight)
-      }, 20);
-    },
-
     sendMessageAsBot(text, buttons) {
       let that = this
       this.writing = true
@@ -84,10 +78,11 @@ export default {
     },
 
     sendMessageAsUser(text, origin) {
+      if(!this.messageInput.trim().length && origin === 'input') return
       this.messages.push(new Message(text, 'user'))
       this.buttons = []
       if (origin === 'input') {
-        if(!this.isAwaiting) this.$emit('text', this.messageInput)
+        if (!this.isAwaiting) this.$emit('text', this.messageInput)
         else {
           this.awaitingResolver(text)
           this.isAwaiting = false
@@ -97,25 +92,42 @@ export default {
       this.scrollToBottom()
     },
 
-    ask(question, options){
+    ask(question, options) {
       this.isAwaiting = true
       options = options || []
       this.sendMessage(question, options)
       let that = this
 
-      return new Promise(function(resolve, reject) {
-          that.awaitingResolver = resolve
+      return new Promise(function(resolve) {
+        that.awaitingResolver = resolve
       })
     },
 
     postback(button) {
       this.sendMessageAsUser(button.title, 'postback')
       this.scrollToBottom()
-      if(!this.isAwaiting) this.$emit('postback', button.payload, button.data)
+      if (!this.isAwaiting) this.$emit('postback', button.payload, button.data)
       else {
         this.awaitingResolver(button.payload)
         this.isAwaiting = false
       }
+    },
+
+    scrollToBottom() {
+      setTimeout(function() {
+        document.querySelector('.chatbot-messages').scrollTo(0, document.querySelector('.chatbot-messages').scrollHeight)
+      }, 20);
+    },
+
+    buttonsScroll(e) {
+      const buttons = document.querySelector('.chatbot-buttons')
+      buttons.scrollTo(buttons.scrollLeft + e.deltaY, 0)
+    },
+
+    textareaKey(e){
+      if(e.key !== 'Enter') return
+      e.preventDefault()
+      this.sendMessageAsUser(this.messageInput, 'input')
     }
   },
   created() {
@@ -130,17 +142,25 @@ export default {
 
 <style lang="css" scoped>
 .chatbot-window{
-  height: 600px;
   font-family: Helvetica;
-  /* background: pink; */
+  height: 100%;
+  width: 100%;
 }
 
 .chatbot-messages{
   height: 85%;
   width: 90%;
-  padding-top: 10px;
-  margin: 0 auto;
+  padding: 10px 5% 0 5%;
   overflow-y: scroll;
+}
+
+.chatbot-messages::-webkit-scrollbar {
+    width: 2px;
+}
+
+.chatbot-messages::-webkit-scrollbar-thumb {
+    background-color: #F2F2F2;
+    border-radius: 2px;
 }
 
 .chatbot-message-row{
@@ -152,19 +172,19 @@ export default {
 }
 
 .chatbot-message-row-bot{
-justify-content: flex-start;
+  justify-content: flex-start;
 }
 
 .chatbot-message{
     max-width: 51%;
     margin: 2px 0;
-    padding: 10px;
+    padding: 10px 15px;
     text-align: left;
     border-radius: 1.3em;
 }
 
 .chatbot-message-user{
-  background-color: blue;
+  background-color: #0084FF;
   color: white;
 }
 
@@ -173,21 +193,38 @@ justify-content: flex-start;
 }
 
 .chatbot-buttons{
-  height: 10%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: 1% 5%;
+  height: 38px;
+  overflow-x: scroll;
+  white-space: nowrap;
 }
 
-.chatbot-button{
+.chatbot-buttons::-webkit-scrollbar {
+    height: 4px;
+}
+
+.chatbot-buttons::-webkit-scrollbar-thumb {
+    background-color: #F2F2F2;
+    border-radius: 2px;
+}
+
+.chatbot-button {
   padding: 6px 15px;
   text-align: center;
-  border: 1px solid blue;
-  color: blue;
+  border: 1px solid #0084FF;
+  color: #0084FF;
   border-radius: 1.3em;
   cursor: pointer;
   margin: 0 4px;
+  white-space: nowrap;
+  display: inline-block;
 }
+
+.chatbot-sendbutton-disabled>div {
+  color: #F2F2F2;
+  pointer-events: none;
+}
+
 
 .chatbot-textinput{
   display: flex;
@@ -195,8 +232,24 @@ justify-content: flex-start;
   align-items: flex-end;
   height: 5%;
   width: 90%;
-  margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 5%;
+  margin-top: 15px;
+  min-height: 25px;
+}
+
+.chatbot-textinput-disabled>textarea{
+  pointer-events: none;
+  color: #F2F2F2;
+  border-color: #F2F2F2;
+}
+
+.chatbot-textinput-disabled>textarea::placeholder{
+  color: #F2F2F2;
+}
+
+.chatbot-textinput-disabled>div{
+  color: #F2F2F2;
+  pointer-events: none;
 }
 
 .chatbot-textarea{
@@ -212,8 +265,7 @@ justify-content: flex-start;
 
 .chatbot-sendbutton{
   width: 15%;
-  height: 100%;
-  color: orange;
+  color: #0084FF;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -232,16 +284,16 @@ justify-content: flex-start;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  width: 45px;
+  width: 42px;
 }
 
 .chatbot-writing-dot {
-  width: 10px;
-  height: 10px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   background-color: grey;
   animation-name: bounce;
-  animation-duration: 2s;
+  animation-duration: 1s;
   animation-iteration-count: infinite;
 }
 
@@ -256,11 +308,11 @@ justify-content: flex-start;
 @keyframes bounce {
   0% {transform: translate(0, 0)}
   15% {
-    transform: translate(0, -10px);
+    transform: translate(0, -6px);
     animation-timing-function: ease-in-out;
   }
   18% {
-    transform: translate(0, -10px);
+    transform: translate(0, -6px);
   }
   35% {
     transform: translate(0, 0);
