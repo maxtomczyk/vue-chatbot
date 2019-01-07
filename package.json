@@ -10,17 +10,10 @@
   },
   "scripts": {
     "build": "npm run build:umd & npm run build:es & npm run build:unpkg",
-<<<<<<< HEAD
     "build:umd": "rollup --config build/rollup.config.js --format umd --file dist/VueChatbot.umd.js",
     "build:es": "rollup --config build/rollup.config.js --format es --file dist/VueChatbot.esm.js",
     "build:unpkg": "rollup --config build/rollup.config.js --format iife --file dist/VueChatbot.min.js",
-    "postinstall": "npm i rollup -g & npm run build"
-=======
-    "build:umd": "node ../rollup/bin/rollup --config build/rollup.config.js --format umd --file dist/VueChatbot.umd.js",
-    "build:es": "node ../rollup/bin/rollup --config build/rollup.config.js --format es --file dist/VueChatbot.esm.js",
-    "build:unpkg": "node ../rollup/bin/rollup --config build/rollup.config.js --format iife --file dist/VueChatbot.min.js",
     "postinstall": "npm run build"
->>>>>>> 5c3466b71294249b675ecb0543ae2bd0af5504ef
   },
   "repository": {
     "type": "git",
@@ -36,7 +29,7 @@
     "url": "https://github.com/maxtomczyk/vue-web-chatbot/issues"
   },
   "homepage": "https://github.com/maxtomczyk/vue-web-chatbot#readme",
-  "devDependencies": {
+  "dependencies": {
     "rollup": "^1.0.2",
     "rollup-plugin-buble": "^0.19.6",
     "rollup-plugin-vue": "^4.3.2",
